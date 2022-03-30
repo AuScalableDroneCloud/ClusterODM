@@ -14,10 +14,16 @@ RUN apt update && apt install -y telnet curl && \
     curl -L https://github.com/JonasProgrammer/docker-machine-driver-hetzner/releases/download/2.0.1/docker-machine-driver-hetzner_2.0.1_linux_amd64.tar.gz | tar -xz --directory=/tmp && \
     install --mode +x /tmp/docker-machine-driver-hetzner /usr/local/bin/
 
-COPY . /var/www
+RUN mkdir /var/www
 WORKDIR "/var/www"
+RUN useradd -m -d "/home/odm" -s /bin/bash odm
+COPY --chown=odm:odm . /var/www
 
 RUN npm install
+
+RUN chown -R odm:odm /var/www
+
+USER odm
 
 VOLUME ["/var/www/data"]
 ENTRYPOINT ["/usr/local/bin/node", "/var/www/index.js"]
