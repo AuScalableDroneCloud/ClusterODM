@@ -16,14 +16,13 @@ RUN apt update && apt install -y telnet curl && \
 
 RUN mkdir /var/www
 WORKDIR "/var/www"
-RUN useradd -m -d "/home/odm" -s /bin/bash odm
-COPY --chown=odm:odm . /var/www
+COPY --chown=node:node . /var/www
 
 RUN npm install
 
-RUN chown -R odm:odm /var/www
+RUN chown -R node:node /var/www
 
-USER odm
+USER node
 
 VOLUME ["/var/www/data"]
 ENTRYPOINT ["/usr/local/bin/node", "/var/www/index.js"]
