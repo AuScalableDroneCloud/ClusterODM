@@ -37,6 +37,7 @@ const assureUniqueFilename = (dstPath, filename) => {
         fs.exists(dstFile, async exists => {
             if (!exists) resolve(filename);
             else{
+                logger.warn(`DUPLICATE FILENAME ${filename} IN ${dstPath}`);
                 const parts = filename.split(".");
                 if (parts.length > 1){
                     resolve(await assureUniqueFilename(dstPath, 
